@@ -1,4 +1,4 @@
-package App;
+/*package App;
 
 import dao.Conexion;
 import dao.EventoDao;
@@ -31,4 +31,4 @@ public class AppConex {
 
         
     }
-}
+}*/
