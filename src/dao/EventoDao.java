@@ -4,18 +4,19 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import vo.CantanteVo;
+import vo.EventoVo;
 
-public class CantanteDao {
+public class EventoDao {
 
-    public List<CantanteVo> obtenerCantantes(Connection conexion) {
-        //Define la consulta sobre la tabla cantante:
-        String consulta = "SELECT id, nombre, descripcion FROM cantante";
+    public List<EventoVo> obtenerEventos(Connection conexion) {
+        //Define la consulta sobre la tabla evento:
+        String consulta = "SELECT id, nombre, fecha, lugar, estado FROM cantante";
 
         //crea el arraylist que almacenará el resultado de la SELECT
-        List<CantanteVo> cantantes = new ArrayList<>();
+        List<EventoVo> eventos = new ArrayList<>();
 
         //try con recursos --> se utiliza con clases que implementan autocloseable
         //se trata de una opción que cierra automáticamente los recursos abiertos,
@@ -29,19 +30,24 @@ public class CantanteDao {
                 //servidor y que se ha almacenado en ResultSet
                 //para obtener los datos se utilizan métodos get
                 //obtenemos columna a columna
-                int id = resultado.getInt("id");
+                String id = resultado.getString("id");
                 String nombre = resultado.getString("nombre");
-                String descripcion = resultado.getString("descripcion");
+                LocalDate fecha = resultado.getDate("fecha").toLocalDate();
+                
+                String lugar = resultado.getString("lugar");
+                String estado = resultado.getString("estado");
 
-                CantanteVo cant  = new CantanteVo(id, nombre, descripcion);
-                cantantes.add(cant);//se añade el eventi a la lista
+                EventoVo eve = new EventoVo(id, nombre, fecha, lugar, estado);
+                eventos.add(eve);//se añade el eventi a la lista
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return cantantes;
+        return eventos;
     }
+
+    
 
 }

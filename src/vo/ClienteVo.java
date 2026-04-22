@@ -6,6 +6,7 @@ public class ClienteVo extends PersonaVo {
     private String prApellido;
     private String sgApellido;
     private String email;
+    
     private String telefono;
 
     public ClienteVo(String id, String nombre, String prApellido, String sgApellido, String email, String telefono) {

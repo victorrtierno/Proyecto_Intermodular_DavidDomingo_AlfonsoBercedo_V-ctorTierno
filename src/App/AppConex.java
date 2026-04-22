@@ -1,7 +1,7 @@
-package App;
+/*package App;
 
 import dao.Conexion;
-import dao.CantanteDao;
+import dao.EventoDao;
 import java.sql.Connection;
 import java.util.List;
 import vo.CantanteVo;
@@ -10,7 +10,7 @@ public class AppConex {
 
     public static void main(String[] args) {
         //creamos el DAO para ejecutar las operaciones disponibles
-        CantanteDao a1DAO = new CantanteDao();
+        EventoDao a1DAO = new EventoDao();
 
         try {
             //establecer la conexión
@@ -31,4 +31,4 @@ public class AppConex {
 
         
     }
-}
+}*/
