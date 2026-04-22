@@ -4,7 +4,7 @@ import dao.Conexion;
 import dao.CantanteDao;
 import java.sql.Connection;
 import java.util.List;
-import vo.AlumnoVo;
+import vo.CantanteVo;
 
 public class AppConex {
 
@@ -18,10 +18,10 @@ public class AppConex {
             System.out.println("Conexión realizada con éxito");
 
             //consultar los alumnos
-            List<AlumnoVo> alumnos = a1DAO.obtenerAlumnos(conex);
+            List<CantanteVo> cantantes = a1DAO.obtenerCantantes(conex);
 
-            for (AlumnoVo alum : alumnos) {
-                System.out.println(alum);
+            for (CantanteVo canta : cantantes) {
+                System.out.println(canta);
                 
             }
 
