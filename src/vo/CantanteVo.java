@@ -1,54 +1,40 @@
 package vo;
 
-import java.time.LocalDate;
-
 public class CantanteVo {
-    private String id;
+
+    private int id;
     private String nombre;
-    private LocalDate fecha;
-    private String lugar;
-    private String estado;
-    public CantanteVo(String id, String nombre, LocalDate fecha, String lugar, String estado) {
+    private String descripcion;
+
+    public CantanteVo(
+            int id,
+            String nombre,
+            String descripcion
+    ) {
+
         this.id = id;
         this.nombre = nombre;
-        this.fecha = fecha;
-        this.lugar = lugar;
-        this.estado = estado;
+        this.descripcion = descripcion;
+
     }
-    public String getId() {
+
+    public int getId() {
         return id;
     }
-    public void setId(String id) {
-        this.id = id;
-    }
+
     public String getNombre() {
         return nombre;
     }
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+
+    public String getDescripcion() {
+        return descripcion;
     }
-    public LocalDate getFecha() {
-        return fecha;
-    }
-    public void setFecha(LocalDate fecha) {
-        this.fecha = fecha;
-    }
-    public String getLugar() {
-        return lugar;
-    }
-    public void setLugar(String lugar) {
-        this.lugar = lugar;
-    }
-    public String getEstado() {
-        return estado;
-    }
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-    
+
     @Override
     public String toString() {
-        return "CantanteVo [id=" + id + ", nombre=" + nombre + ", fecha=" + fecha + ", lugar=" + lugar + ", estado="
-                + estado + "]";
+
+        return id + " - " + nombre;
+
     }
+
 }

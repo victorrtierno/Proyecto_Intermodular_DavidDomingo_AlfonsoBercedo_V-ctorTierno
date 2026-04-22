@@ -6,10 +6,16 @@ public class ZonaVo {
     private String nombre;
     private double precioBase;
 
-    public ZonaVo(int id, String nombre, double precioBase) {
+    public ZonaVo(
+            int id,
+            String nombre,
+            double precioBase
+    ) {
+
         this.id = id;
         this.nombre = nombre;
         this.precioBase = precioBase;
+
     }
 
     public int getId() {
@@ -18,6 +24,14 @@ public class ZonaVo {
 
     @Override
     public String toString() {
-        return id + " - " + nombre + " (" + precioBase + "€)";
+
+        return id +
+               " - " +
+               nombre +
+               " (" +
+               precioBase +
+               "€)";
+
     }
+
 }

@@ -7,19 +7,24 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import vo.CantanteVo;
+import vo.AsientoVo;
 
-public class CantanteDao {
+public class AsientoDao {
 
-    public List<CantanteVo>
-        obtenerCantantes(Connection conexion) {
+    public List<AsientoVo>
+        obtenerAsientosPorZona(
+                Connection conexion,
+                int idZona
+        ) {
 
-        List<CantanteVo> lista =
+        List<AsientoVo> lista =
                 new ArrayList<>();
 
         String sql =
-            "SELECT id, nombre, descripcion " +
-            "FROM Cantante";
+            "SELECT id, fila, numero, estado " +
+            "FROM Asiento " +
+            "WHERE idZona = "
+            + idZona;
 
         try (
 
@@ -33,16 +38,17 @@ public class CantanteDao {
 
             while (rs.next()) {
 
-                CantanteVo c =
-                        new CantanteVo(
+                AsientoVo a =
+                        new AsientoVo(
 
                             rs.getInt("id"),
-                            rs.getString("nombre"),
-                            rs.getString("descripcion")
+                            rs.getInt("fila"),
+                            rs.getInt("numero"),
+                            rs.getString("estado")
 
                         );
 
-                lista.add(c);
+                lista.add(a);
 
             }
 

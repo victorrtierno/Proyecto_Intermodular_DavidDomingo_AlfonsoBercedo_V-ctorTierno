@@ -14,4 +14,9 @@ public class CarritoVo {
     public List<AsientoVo> getAsientos() {
         return asientos;
     }
+
+    @Override
+    public String toString() {
+        return "CarritoVo [asientos=" + asientos + "]";
+    }
 }
