@@ -1,54 +1,42 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import vo.ZonaVo;
 
 public class ZonaDao {
 
-    public List<ZonaVo>
-        obtenerZonasPorEvento(
-                Connection conexion,
-                int idEvento
-        ) {
+    public List<ZonaVo> obtenerZonasPorEvento(
+            Connection conexion,
+            int idEvento) {
 
-        List<ZonaVo> lista =
-                new ArrayList<>();
+        List<ZonaVo> zonas = new ArrayList<>();
 
-        String sql =
+        String consulta =
             "SELECT id, nombre, precioBase " +
             "FROM Zona " +
-            "WHERE idEvento = "
-            + idEvento;
+            "WHERE idEvento = ?";
 
-        try (
+        try (PreparedStatement stmt =
+                conexion.prepareStatement(consulta)) {
 
-            Statement stmt =
-                    conexion.createStatement();
+            stmt.setInt(1, idEvento);
 
-            ResultSet rs =
-                    stmt.executeQuery(sql)
-
-        ) {
+            ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
 
-                ZonaVo z =
-                        new ZonaVo(
+                ZonaVo zona =
+                    new ZonaVo(
+                        rs.getInt("id"),
+                        rs.getString("nombre"),
+                        rs.getDouble("precioBase")
+                    );
 
-                            rs.getInt("id"),
-                            rs.getString("nombre"),
-                            rs.getDouble("precioBase")
-
-                        );
-
-                lista.add(z);
-
+                zonas.add(zona);
             }
 
         } catch (Exception e) {
@@ -57,8 +45,6 @@ public class ZonaDao {
 
         }
 
-        return lista;
-
+        return zonas;
     }
-
 }

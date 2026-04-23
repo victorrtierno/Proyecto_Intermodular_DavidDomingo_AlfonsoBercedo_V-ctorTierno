@@ -3,19 +3,24 @@ package App;
 import dao.AsientoDao;
 import dao.CantanteDao;
 import dao.Conexion;
+import dao.EntradaDao;
 import dao.EventoDao;
+import dao.VentaDao;
 import dao.ZonaDao;
 import java.sql.Connection;
+import java.util.List;
 import java.util.Scanner;
+import vo.AsientoVo;
+import vo.CantanteVo;
 import vo.CarritoVo;
+import vo.ZonaVo;
 
 public class MenuPrincipal {
 
     static Scanner sc = new Scanner(System.in);
 
-    int randomNum = (int) (Math.random() * 1000);
-
     static Connection conexion;
+
     static CantanteDao cantanteDao = new CantanteDao();
     static EventoDao eventoDao = new EventoDao();
     static ZonaDao zonaDao = new ZonaDao();
@@ -29,51 +34,175 @@ public class MenuPrincipal {
 
             conexion = Conexion.getConnection();
 
-            String email;
+            System.out.print("Email: ");
+            String email = sc.nextLine();
 
-            do {
+            boolean esEmpleado
+                    = email.contains("@empleado");
 
-                System.out.println("------MENU PRINCIPAL------");
-                System.out.println("introduce tu correo para verificar tu identidad");
-                //si el correo contiene @empleado, accedes como empleado
-                /*System.out.println("2. Ver eventos de cantante");
-                System.out.println("3. Ver zonas de evento");
-                System.out.println("4. Ver asientos de zona");
-                System.out.println("5. Añadir asiento al carrito");
-                System.out.println("6. Ver carrito");
-                System.out.println("0. Salir");*/
+            if (esEmpleado) {
+                menuEmpleado();
+            } else {
+                menuCliente();
+            }
 
-                System.out.print("Opción: ");
-                email = sc.nextLine();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-                
+    }
 
-                if (email.contains("empleado")) {
-                    System.out.println("Contiene 'empleado'");
-                    //le damos una acreditacion para tener acceso a la creacio de cantantes/eventos
-                    int randomNum = (int) (Math.random() * 1000);
-                    System.out.println("Esta es tu acreditación: "+randomNum);
+    static void menuCliente() {
 
-                }
+        int op;
 
-                System.out.println("");
-                System.out.println("introduce tu correo para verificar tu identidad");
+        do {
 
-                /*if (opcion == 1) {
+            System.out.println("--- CLIENTE ---");
+            System.out.println("1. Comprar entradas");
+            System.out.println("0. Salir");
+
+            System.out.print("Opción: ");
+            op = sc.nextInt();
+
+            switch (op) {
+
+                case 1 ->
+                    comprarEntradas();
+
+            }
+
+        } while (op != 0);
+
+    }
+
+    static void menuEmpleado() {
+
+        int opcion;
+
+        do {
+
+            System.out.println("--- EMPLEADO ---");
+            System.out.println("1. Comprar entradas");
+            System.out.println("2. Ver cantantes");
+            System.out.println("0. Salir");
+
+            System.out.print("Opción: ");
+            opcion = sc.nextInt();
+
+            switch (opcion) {
+
+                case 1 ->
+                    comprarEntradas();
+
+                case 2 -> {
 
                     System.out.println("--- CANTANTES ---");
 
-                    List<CantanteVo> lista = cantanteDao.obtenerCantante(conexion);
+                    List<CantanteVo> lista = cantanteDao.obtenerCantantes(conexion);
+
                     for (CantanteVo c : lista) {
 
                         System.out.println(c);
 
                     }
 
-                }*/
-            } while (!email.equalsIgnoreCase("salir"));
+                }
 
-            conexion.close();
+            }
+
+        } while (opcion != 0);
+
+    }
+
+    static void comprarEntradas() {
+
+        try {
+
+            // CANTANTES
+            System.out.println("--- CANTANTES ---");
+
+            List<CantanteVo> cantantes
+                    = cantanteDao.obtenerCantantes(conexion);
+
+            for (CantanteVo c : cantantes) {
+
+                System.out.println(c);
+
+            }
+
+            System.out.print("ID cantante: ");
+            int idCantante = sc.nextInt();
+
+            // EVENTO
+            System.out.print("ID evento: ");
+            int idEvento = sc.nextInt();
+
+            // ZONAS
+            System.out.println("--- ZONAS ---");
+
+            List<ZonaVo> zonas
+                    = zonaDao.obtenerZonasPorEvento(
+                            conexion,
+                            idEvento);
+
+            for (ZonaVo z : zonas) {
+
+                System.out.println(z);
+
+            }
+
+            System.out.print("ID zona: ");
+            int idZona = sc.nextInt();
+
+            // ASIENTOS
+            System.out.println("--- ASIENTOS ---");
+
+            List<AsientoVo> asientos
+                    = asientoDao.obtenerAsientosPorZona(
+                            conexion,
+                            idZona);
+
+            for (AsientoVo a : asientos) {
+
+                System.out.println(a);
+
+            }
+
+            System.out.print("ID asiento: ");
+            int idAsiento = sc.nextInt();
+
+            // AÑADIR AL CARRITO
+            for (AsientoVo a : asientos) {
+
+                if (a.getId() == idAsiento) {
+
+                    carrito.add(a);
+
+                    System.out.println("Añadido al carrito");
+
+                }
+
+            }
+
+            // MOSTRAR CARRITO
+            System.out.println("--- CARRITO ---");
+
+            for (AsientoVo a : carrito.getAsientos()) {
+
+                System.out.println(a);
+
+            }
+
+            // CONFIRMAR COMPRA
+            System.out.print("Confirmar compra (1=SI): ");
+            int confirmar = sc.nextInt();
+
+            if (confirmar == 1) {
+
+                confirmarCompra();
+
+            }
 
         } catch (Exception e) {
 
@@ -82,4 +211,48 @@ public class MenuPrincipal {
         }
 
     }
+
+    static void confirmarCompra() {
+
+        try {
+
+            VentaDao ventaDao = new VentaDao();
+            EntradaDao entradaDao = new EntradaDao();
+
+            int idCliente = 1; // cliente de prueba
+
+            double total = carrito.getAsientos().size() * 50;
+
+            int idVenta
+                    = ventaDao.crearVenta(
+                            conexion,
+                            idCliente,
+                            total);
+
+            for (AsientoVo a : carrito.getAsientos()) {
+
+                entradaDao.crearEntrada(
+                        conexion,
+                        idVenta,
+                        a.getId(),
+                        50);
+
+                asientoDao.ocuparAsiento(
+                        conexion,
+                        a.getId());
+
+            }
+
+            carrito.limpiar();
+
+            System.out.println("Compra realizada correctamente");
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+        }
+
+    }
+
 }
