@@ -6,7 +6,7 @@ import java.sql.DriverManager;
 public class Conexion {
     public static Connection getConnection() throws Exception{
         try {
-            String url = "jdbc:mysql://localhost:3306/bdcentroidiomas";
+            String url = "jdbc:mysql://localhost:3306/GestionEventos";
             String user = "root";
             String pwd = "mysql";
 
