@@ -23,6 +23,7 @@ public class CarritoVo {
         return asientos;
     }
 
+<<<<<<< HEAD
     public double calcularTotal(double precioBase) {
         return asientos.size() * precioBase;
     }
@@ -32,3 +33,10 @@ public class CarritoVo {
     }
 
 }
+=======
+    @Override
+    public String toString() {
+        return "CarritoVo [asientos=" + asientos + "]";
+    }
+}
+>>>>>>> david
