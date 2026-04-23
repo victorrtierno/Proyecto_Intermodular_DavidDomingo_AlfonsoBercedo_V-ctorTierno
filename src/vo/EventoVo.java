@@ -28,5 +28,20 @@ public class EventoVo {
                 + estado + "]";
     }
 
+    public Object getNombre() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getNombre'");
+    }
+
+    public Object getFecha() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getFecha'");
+    }
+
+    public Object getLugar() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getLugar'");
+    }
+
     
 }
