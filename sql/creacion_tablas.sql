@@ -18,6 +18,8 @@ CREATE TABLE Cantante (
 CREATE TABLE Cliente (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
+    prApellido VARCHAR(100) NOT NULL,
+    sgApellido VARCHAR(100) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
     telefono VARCHAR(15),
     numTarjeta VARCHAR(20),
@@ -28,6 +30,8 @@ CREATE TABLE Empleado (
     id INT AUTO_INCREMENT PRIMARY KEY,
     dni VARCHAR(8) UNIQUE NOT NULL,
     nombre VARCHAR(100) NOT NULL,
+    prApellido VARCHAR(100) NOT NULL,
+    sgApellido VARCHAR(100) NOT NULL,
     usuario VARCHAR(50) UNIQUE NOT NULL,
     contrasena VARCHAR(255) NOT NULL,
     rol VARCHAR(50) NOT NULL

@@ -12,8 +12,6 @@ public class ClienteVo extends PersonaVo {
     public ClienteVo(String id, String nombre, String prApellido, String sgApellido, String email, String contraseña, String telefono) {
         this.id = id;
         this.nombre = nombre;
-        this.prApellido = prApellido;
-        this.sgApellido = sgApellido;
         this.email = email;
         this.contraseña = contraseña;
         this.telefono = telefono;
