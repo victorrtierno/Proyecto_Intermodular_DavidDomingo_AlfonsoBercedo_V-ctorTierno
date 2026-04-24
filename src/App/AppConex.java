@@ -19,6 +19,7 @@ public class AppConex {
         Scanner scanner = new Scanner(System.in);
         boolean salirDelSistema = false;
 
+        // Método salir de sistema
         while (!salirDelSistema) {
             limpiarPantalla();
             mostrarMenuAcceso();
@@ -91,31 +92,45 @@ public class AppConex {
         int opcion = scanner.nextInt();
         scanner.nextLine();
 
-        if (opcion == 1) {
-            System.out.print("\n  ➤ Introduce tu Email: ");
-            String email = scanner.nextLine();
+        
             
-            try {
+            
+        if (opcion == 1) {
+                System.out.print("\n  ➤ Introduce tu Email: ");
+                String email = scanner.nextLine();
+                System.out.print("  ➤ Introduce tu Contraseña: ");
+                String contrasena = scanner.nextLine();
+            
+                try {
                 Connection conex = Conexion.getConnection();
-                String sql = "SELECT id, nombre FROM Cliente WHERE email = ?";
-                PreparedStatement pstmt = conex.prepareStatement(sql);
-                pstmt.setString(1, email);
-                ResultSet rs = pstmt.executeQuery();
-
-                if (rs.next()) {
-                    int idCliente = rs.getInt("id");
-                    String nombre = rs.getString("nombre");
-                    System.out.println("\n  [OK] ¡Bienvenido de nuevo, " + nombre + "!");
-                    pausa(scanner);
-                    menuCliente(scanner, idCliente, nombre);
-                } else {
-                    System.out.println("\n  [!] Error: No se encontró ninguna cuenta con ese email.");
-                    pausa(scanner);
+                String consulta = "SELECT id, nombre FROM Cliente WHERE email = ? AND contrasena = ?";
+                
+                // Utilizamos try con recursos con PreparedStatement para prevenir inyección SQL 
+                // y cerrar el recurso automáticamente
+                try (PreparedStatement pstmt = conex.prepareStatement(consulta)) {
+                    pstmt.setString(1, email);
+                    pstmt.setString(2, contrasena); // Pasamos la contraseña como segundo parámetro
+                    
+                    // Segundo try con recursos para el ResultSet
+                    try (ResultSet resultado = pstmt.executeQuery()) {
+                        if (resultado.next()) {
+                            int idCliente = resultado.getInt("id");
+                            String nombre = resultado.getString("nombre");
+                            System.out.println("\n  [OK] ¡Bienvenido de nuevo, " + nombre + "!");
+                            pausa(scanner);
+                            menuCliente(scanner, idCliente, nombre);
+                        } else {
+                            // Mensaje genérico por seguridad, sin especificar el campo incorrecto
+                            System.out.println("\n  [!] Error: Email o contraseña incorrectos.");
+                            pausa(scanner);
+                        }
+                    }
                 }
-            } catch (Exception e) {
+                } catch (Exception e) {
                 System.out.println("  [!] Error de BBDD: " + e.getMessage());
                 pausa(scanner);
-            }
+            
+        }
 
         } else if (opcion == 2) {
             System.out.println("\n  --- NUEVO REGISTRO ---");
@@ -123,16 +138,19 @@ public class AppConex {
             String nombre = scanner.nextLine();
             System.out.print("  ➤ Email: ");
             String email = scanner.nextLine();
+            System.out.println("  ➤ Contraseña: ");
+            String contraseña = scanner.nextLine();
             System.out.print("  ➤ Teléfono: ");
             String telefono = scanner.nextLine();
-            // YA NO SE PIDE LA TARJETA AQUÍ
+            
 
             try {
                 Connection conex = Conexion.getConnection();
-                String sql = "INSERT INTO Cliente (nombre, email, telefono) VALUES (?, ?, ?)";
+                String sql = "INSERT INTO Cliente (nombre, email, contraseña, telefono) VALUES (?, ?, ?, ?)";
                 PreparedStatement pstmt = conex.prepareStatement(sql);
                 pstmt.setString(1, nombre);
                 pstmt.setString(2, email);
+                pstmt.setString(3, contraseña);
                 pstmt.setString(3, telefono);
                 pstmt.executeUpdate();
 
