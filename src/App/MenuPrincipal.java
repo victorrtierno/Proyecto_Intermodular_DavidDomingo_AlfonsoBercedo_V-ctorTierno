@@ -243,7 +243,6 @@ public class MenuPrincipal {
 
             }
 
-            carrito.limpiar();
 
             System.out.println("Compra realizada correctamente");
 
